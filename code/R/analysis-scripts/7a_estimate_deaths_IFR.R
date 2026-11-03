@@ -108,6 +108,6 @@ ifr_fit <- stan(
 
 # Save --------------------------------------------------------------------
 saveRDS(ifr_fit, file = here(
-  "outputs/joint_fit_age_pooling99.rds")
+  "outputs/joint_fit_age_pooling99_local.rds")
 )
 
