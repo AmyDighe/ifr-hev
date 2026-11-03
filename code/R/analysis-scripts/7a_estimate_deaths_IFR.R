@@ -35,10 +35,10 @@ deaths <- readRDS(file = here(
       preg_status == "not_pregnant", age_class, "pregnant")
     )
 
-infections <- readRDS(here(
+infections <- readRDS(
   file = here(
     "outputs/infections.rds")
-))%>% mutate(
+)%>% mutate(
     group = if_else(
       preg_status == "not_pregnant", age_class, "pregnant")
     )
@@ -63,6 +63,11 @@ data <- full_join(infections_summary, deaths,
 groups <- data %>% 
   dplyr::select(-DAJ, -DHEV, -DcAJ, -mean_infections, - median_infections, -sd_infections)
 places <- unique(groups$MCH) # for indexing MCH correctly
+
+## save groups to preserve order for plotting
+saveRDS(groups, here(
+  "outputs/groups_ifr.rds")
+  )
 
 # Make model matrix -------------------------------------------------------
 X_full <- model.matrix(~ MCH + age_class + preg_status - 1, data = groups)
