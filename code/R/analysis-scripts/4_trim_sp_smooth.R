@@ -13,15 +13,18 @@
 # - seroprevalence reformatted for FoI estimation
 #   at "outputs/sp_for_catalytic_model_fitting.rds")
 
-source("code/dependencies.R")
+source(here::here(
+  "code/dependencies.R")
+)
 
 #-------------------------------------------------------------------------------
 
 # read in smoothed seroprevalence data - 
 # posterior draws for each grid cell for each age class
 pdraws <- readRDS(
+  here(
   "outputs/seroprevalence/sp_post_agepooling.rds")
-
+)
 pdraws <- pdraws%>%
   mutate(age_class = case_when(age_id == 1 ~ "(0,5]",
                                age_id == 2 ~ "(5,10]",
@@ -45,7 +48,9 @@ pdraws <- pdraws%>%
 # cut out age stratified sp per catchment
 
 ### read in the catchment areas
-bd3_merge <- readRDS(file = "outputs/seroprevalence/catchment.rds")%>%
+bd3_merge <- readRDS(file = here(
+  "outputs/seroprevalence/catchment.rds")
+  )%>%
   transform_to_btm()
 
 ### merge the upazilas in each catchment areas together
@@ -62,7 +67,9 @@ catchment <- ggplot()+
   geom_sf(data = trm %>% filter(age_class == "(40,45]"), aes(fill = pred_1), colour = NA)+
   scale_fill_viridis_c(direction=1,alpha=.9, limits = c(0,1), name = "Seroprevalence")+
   theme_void()
-ggsave(catchment, file = "figures/FigS2B.png", dpi =300)
+ggsave(catchment, file = here(
+  "figures/FigS2B.png", dpi =300)
+)
 
 # calculate mean for each catchment area per iteration and age class
 t <- trm %>% 
@@ -101,7 +108,8 @@ p <- ggplot(t_long)+
   theme(text = element_text(size = 24),
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
-ggsave(p, file = "figures/FigS2C.png", height = 6, width = 9, unit = "in")
+ggsave(p, file = here(
+  "figures/FigS2C.png"), height = 6, width = 9, unit = "in")
 
 # reshape for stan
 ## add age class boundaries
@@ -109,6 +117,10 @@ t$age1 <- as.numeric(sapply( str_match_all(t$age_class, pattern = "\\d+"),"[[",1
 t$age2 <- as.numeric(sapply( str_match_all(t$age_class, pattern = "\\d+"),"[[",2)) + 0.99
 
 # save
-saveRDS(t_long, file = "outputs/seroprevalence/sp_for_plotting.rds")
-saveRDS(t, file = "outputs/seroprevalence/sp_for_catalytic_model_fitting.rds")
+saveRDS(t_long, file = here(
+  "outputs/seroprevalence/sp_for_plotting.rds")
+  )
+saveRDS(t, file = here(
+  "outputs/seroprevalence/sp_for_catalytic_model_fitting.rds")
+)
 

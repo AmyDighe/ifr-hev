@@ -15,13 +15,16 @@
 ##   my_path "/hospital_surveillance/clean/minimal_deaths_data_coinfections.csv"
 
 # load dependencies
-
-source("code/dependencies.R")
+source(here::here(
+  "code/dependencies.R")
+)
 
 #--------------------------------------------------------------------------------
 
 # read in hospital level data and update name formatting
-deaths_hosp <- read.csv(paste0(my_path, "/hospital_surveillance/raw/hosp_cleanHEV_complete.csv"))%>% # match upazila names to shape files for mapping later
+deaths_hosp <- read.csv(here(
+  paste0(my_path, "/hospital_surveillance/raw/hosp_cleanHEV_complete.csv"))
+  )%>% # match upazila names to shape files for mapping later
   mutate(address_thana = case_when(grepl(address_thana, pattern = "Thana Total") ~ str_remove(address_thana, "\\s*Thana Total.*$"),
                                    address_thana == "Barguna Sadar Upazila Tota" ~ "Barguna Sadar",
                                    ((address_thana == "Brahmanpara")&(address_dist == "Comilla")) ~ "Brahman Para",
@@ -70,7 +73,7 @@ d <- deaths_hosp %>% dplyr::select(BGD_ID, BGD_IgM_Result,
                                    hospital, hospitalID, year_adm, 
                                    died, maternal, age_class, age, sex)
 
-write.csv(d, paste0(my_path, "/hospital_surveillance/clean/minimal_deaths_data2.csv"))
+write.csv(d, paste0(my_path, "/hospital_surveillance/clean/minimal_deaths_data.csv"))
 
 
 # what about coinfections?
@@ -78,12 +81,17 @@ write.csv(d, paste0(my_path, "/hospital_surveillance/clean/minimal_deaths_data2.
 ## merge with HBV and HAV results
 
 ### read in HAV/HBV data
-coinf <- read.csv(paste0(my_path, "/hospital_surveillance/raw/HEV_Bangladesh_Hos surveillance_deidentified_30May2024.csv")) %>%
+coinf <- read.csv(here(
+  paste0(my_path, "/hospital_surveillance/raw/HEV_Bangladesh_Hos surveillance_deidentified_30May2024.csv"))
+  )%>%
   dplyr::select(dataid, HAV, HBcIgM, HBsAg)%>%
   mutate(dataid = as.character(dataid))
 
 d_co <- full_join(d, coinf, by = c("BGD_ID" = "dataid")) %>%
   filter(!is.na(BGD_IgM_Result))
 
-### save - eventually use this instead of version without coinfections but for now save both so it doesn't break everything
-write.csv(d_co, paste0(my_path, "/hospital_surveillance/clean/minimal_deaths_data_coinfections2.csv"))
+### save - eventually use this instead of version without coinfections 
+### but for now save both so it doesn't break everything
+write.csv(d_co, here(
+  paste0(my_path, "/hospital_surveillance/clean/minimal_deaths_data_coinfections.csv"))
+)

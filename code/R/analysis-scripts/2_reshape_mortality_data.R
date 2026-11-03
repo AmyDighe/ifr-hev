@@ -14,15 +14,21 @@
 ##   my_path, "/model_input/deaths.rds"
 
 # load dependencies
-source("code/dependencies.R")
+source(here::here(
+  "code/dependencies.R")
+)
 
 #-------------------------------------------------------------------------------
 
 ## read in hospitalisation data
-hosp <- read.csv(file = paste0(my_path, "/hospital_surveillance/minimal_deaths_data.csv"))
+hosp <- read.csv(file = here(
+  paste0(my_path, "/hospital_surveillance/minimal_deaths_data.csv"))
+)
 
 ## read in community data
-comm <- readRDS(file = paste0(my_path,"/community_survey/clean_community_decedant_level.rds"))
+comm <- readRDS(file = here(
+  paste0(my_path,"/community_survey/clean_community_decedant_level.rds"))
+)
 
 ## summarise each by MCH, age class and pregnancy status
 hosp <- hosp %>% 
@@ -59,7 +65,9 @@ deaths <- full_join(hosp, comm, by = c("MCH", "age_class", "maternal"))
 
 
 ## save
-saveRDS(deaths, file = paste0(my_path, "/data_private/model_input/deaths.rds"))
+saveRDS(deaths, file = here(
+  paste0(my_path, "/data_private/model_input/deaths.rds"))
+)
 
 # 
 # ## scale up by population

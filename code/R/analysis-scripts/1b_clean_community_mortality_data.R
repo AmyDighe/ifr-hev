@@ -17,8 +17,9 @@
 ##   my_path, "/community_survey/clean/clean_community_cluster_level.rds"
 
 # load dependencies
-
-source("code/dependencies.R")
+source(here::here(
+  "code/dependencies.R")
+)
 
 #-------------------------------------------------------------------------------
 
@@ -30,9 +31,11 @@ source("code/dependencies.R")
 ## filter on just acute jaundice cases
 ## delete duplicated row
 deaths_comm <- readxl::read_xls(
+  here(
   paste0(
     my_path, 
     "/community_survey/Jaundice deaths_adults_VA_Bangladesh_selected variables.xls")
+)
   )%>% filter(
     acute_chronic == "Acute")%>%
   distinct()
@@ -49,9 +52,11 @@ deaths_comm[which(deaths_comm$dataid == "358241"), "clusterid"] <- "58"
 
 ## age and date of death from Repon
 add_comm <- read.csv(
+  here(
   paste0(
     my_path,"/community_survey/Deaths AJS by cluster and age_catchment area_v2.csv"
-    ), colClasses = c(clusterid = "character")
+    )
+  ), colClasses = c(clusterid = "character")
   )%>% mutate(
     dataid = as.character(dataid))
 
@@ -157,9 +162,10 @@ deaths_comm[which(deaths_comm$dataid == "360201"),"decedanttype"] <- "1"
 
 # names and location of each cluster (clusters are unions or wards)
 clusters <- readxl::read_xlsx(
+  here(
   paste0(
     my_path,"/community_survey/HEV mortality Bangladesh_dataid description.xlsx"
-         ), sheet = "91 Cluster"
+         )), sheet = "91 Cluster"
   )%>% rename(
     "cluster_name" = `Cluster Name\r\n(Union/Ward)`,
          "clusterid" = `Cluster ID`,
@@ -200,9 +206,11 @@ df %>% filter(
 # Save the clean data
 ### by decedant
 saveRDS(
-  df, file = paste0(
+  df, file = here(
+    paste0(
     my_path,"/community_survey/clean/clean_community_decedant_level.rds")
   )
+)
 
 # Summarise acute jaundice deaths by cluster
 ### split into adult and maternal deaths
@@ -245,6 +253,8 @@ tmp <- tmp %>%
          preg_pop14 = round(live_births, 0))
 
 saveRDS(
-  tmp, file = paste0(
+  tmp, file = here(
+    paste0(
     my_path, "/community_survey/clean/clean_community_cluster_level.rds")
+  )
   )

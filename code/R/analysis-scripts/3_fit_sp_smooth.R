@@ -17,14 +17,17 @@
 ## - the best fit "outputs/seroprevalence/sp_fit_agepooling.rds"
 ## - a sanity check figure "figures/FigS2A.tif"
 
-source("code/dependencies.R")
+source(here::here(
+  "code/dependencies.R")
+)
 
 ## -----------------------------------------------------------
 ## 1. LOAD SPATIAL GRID
 ## -----------------------------------------------------------
 
 my_cov_grid <- readRDS(
-  paste0(my_path, "/serosurvey/grid_with_covs.rds")
+  here(
+  paste0(my_path, "/serosurvey/grid_with_covs.rds"))
 )
 
 stopifnot(inherits(my_cov_grid, "sf"))
@@ -38,7 +41,8 @@ grid_coords <- st_coordinates(grid_centroids)
 ## -----------------------------------------------------------
 
 dat_raw <- readRDS(
-  paste0(my_path, "/serosurvey/dat_with_raster_covs.rds")
+  here(
+  paste0(my_path, "/serosurvey/dat_with_raster_covs.rds"))
 )
 
 ## -----------------------------------------------------------
@@ -302,8 +306,9 @@ post_draws$age_id  <- pred_grid$age_id
 post_draws <- merge(my_cov_grid, pdraws, by = "grid_id")%>%
   st_as_sf()
 
-saveRDS(post_draws, "outputs/sp_post_agepooling.rds")
-
+saveRDS(post_draws, here(
+  "outputs/sp_post_agepooling.rds")
+)
 ##------------------------------------------------------------
 ## MAPPING AGE SPECIFIC OUTPUTS
 ##------------------------------------------------------------
@@ -499,7 +504,9 @@ pearson_cor <- cor(
 
 fit_metrics <- c("mae"= mae, "bias"= bias,"pearson_cor" = pearson_cor)
 
-saveRDS(fit_metrics, file = "outputs/age_pool_cv.rds")
+saveRDS(fit_metrics, file = here(
+  "outputs/age_pool_cv.rds")
+)
 
 ## -----------------------------------------------------------
 ## SAVE OUTPUTS
@@ -507,17 +514,20 @@ saveRDS(fit_metrics, file = "outputs/age_pool_cv.rds")
 
 saveRDS(
   fit,
-  file = "outputs/sp_fit_agepooling.rds"
+  file = here(
+    "outputs/sp_fit_agepooling.rds")
 )
 
 saveRDS(
   post_draws, 
-  "outputs/sp_post_agepooling.rds"
+  file = here(
+    "outputs/sp_post_agepooling.rds")
   )
 
 ggsave(
   p,
-  filename = "figures/FigS2A.tif",
+  filename = here(
+    "figures/FigS2A.tif"),
   dpi = 300,
   width = 9, height = 6, unit = "in"
 )
@@ -669,5 +679,6 @@ pearson_cor <- cor(
 
 fit_metrics <- c("mae"= mae, "bias"= bias,"pearson_cor" = pearson_cor)
 
-saveRDS(fit_metrics, file = "outputs/age_pool_cv_all_covs.rds")
-
+saveRDS(fit_metrics, file = here(
+  "outputs/age_pool_cv_all_covs.rds")
+)
