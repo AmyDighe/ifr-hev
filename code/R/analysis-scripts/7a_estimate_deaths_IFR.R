@@ -35,10 +35,10 @@ deaths <- readRDS(file = here(
       preg_status == "not_pregnant", age_class, "pregnant")
     )
 
-infections <- readRDS(here(
+infections <- readRDS(
   file = here(
     "outputs/infections.rds")
-))%>% mutate(
+)%>% mutate(
     group = if_else(
       preg_status == "not_pregnant", age_class, "pregnant")
     )
@@ -103,6 +103,6 @@ ifr_fit <- stan(
 
 # Save --------------------------------------------------------------------
 saveRDS(ifr_fit, file = here(
-  "outputs/joint_fit_age_pooling99.rds")
+  "outputs/joint_fit_age_pooling99_local.rds")
 )
 
