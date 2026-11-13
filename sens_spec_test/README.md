@@ -36,6 +36,8 @@ Run in this order; later scripts read `results_real.rds` written by `run_real.R`
 | `dmin_diagnostics.R` | No-fit checks of the d >= 1 lower limit: bias vs expected deaths per group (needs the two simulation result files) and the expected deaths the community term prefers | via simulation results |
 | `sim_dmin_test.R [n_sims] [scale]` | Simulation with infections multiplied by `scale` and the same true IFRs, current term, prior sd 0.5 and 1.5 | via `results_real.rds` |
 | `dmin_scaled_check.R` | Current vs Poisson term on the same scaled datasets, tracking IFR and HEV fraction | via `results_real.rds` |
+| `sim_poisson_hospital.R [n_sims] [inf_scale]` | Poisson term with the hospital sample multiplied by 1, 5 and 25: does the pregnant underestimate shrink with more hospital data? | via `results_real.rds` |
+| `poisson_prior_real.R` | Poisson term on the real data with effect prior sd 0.5 and 1.5 | via `results_real.rds` |
 
 ## Exploratory models
 
