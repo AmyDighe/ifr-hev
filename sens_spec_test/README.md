@@ -38,9 +38,12 @@ Run in this order; later scripts read `results_real.rds` written by `run_real.R`
 | `dmin_scaled_check.R` | Current vs Poisson term on the same scaled datasets, tracking IFR and HEV fraction | via `results_real.rds` |
 | `sim_poisson_hospital.R [n_sims] [inf_scale]` | Poisson term with the hospital sample multiplied by 1, 5 and 25: does the pregnant underestimate shrink with more hospital data? | via `results_real.rds` |
 | `poisson_prior_real.R` | Poisson term on the real data with effect prior sd 0.5 and 1.5 | via `results_real.rds` |
+| `candidate_real.R` | Candidate model (`joint_mod_candidate.stan`) on the real data: original priors, pregnancy free, pregnant HEV fraction pooled, illustrative pregnancy prior. Sources `candidate_setup.R`, which defines the variants | via `results_real.rds` |
+| `candidate_sim.R [n_sims]` | Simulation recovery of the candidate variants against the current model, IFRs and contrasts vs 14-44 | via `candidate_real.rds` |
 
 ## Exploratory models
 
 - `joint_mod_poisson_dcaj.stan`: `DcAJ ~ Poisson(I * IFR / p_HEV_d)` in place of the current community term.
 - `joint_mod_negbin_dcaj.stan`: negative binomial version of the above.
 - `joint_mod_fwd_priorsd.stan`, `joint_mod_poisson_priorsd.stan`: forward and Poisson models with the effect prior sd passed as data (`beta_sd`, `beta_d_sd`).
+- `joint_mod_candidate.stan`: candidate replacement. Forward test error, Poisson community term, all priors passed as data, separate covariate matrix for the HEV fraction.
