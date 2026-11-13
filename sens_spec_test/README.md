@@ -33,6 +33,9 @@ Run in this order; later scripts read `results_real.rds` written by `run_real.R`
 | `prior_sensitivity_real.R` | Refits with prior sd 0.5, 1, 1.5, 2.5 on age/pregnancy effects | via `results_real.rds` |
 | `sim_recovery.R [n_sims]` | Simulation-recovery test of the community term, original priors | via `results_real.rds` |
 | `sim_recovery_priors.R [n_sims] [prior_sd]` | Same, with wider effect priors | via `results_real.rds` |
+| `dmin_diagnostics.R` | No-fit checks of the d >= 1 lower limit: bias vs expected deaths per group (needs the two simulation result files) and the expected deaths the community term prefers | via simulation results |
+| `sim_dmin_test.R [n_sims] [scale]` | Simulation with infections multiplied by `scale` and the same true IFRs, current term, prior sd 0.5 and 1.5 | via `results_real.rds` |
+| `dmin_scaled_check.R` | Current vs Poisson term on the same scaled datasets, tracking IFR and HEV fraction | via `results_real.rds` |
 
 ## Exploratory models
 
